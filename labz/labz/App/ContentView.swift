@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var username: String = ""
+    @State var pokemonName: String = ""
     @EnvironmentObject var model: PokemonViewModel
     @State var firstSearch: Bool = false
     var body: some View {
@@ -16,11 +16,11 @@ struct ContentView: View {
             HStack {
                 TextField(
                     "Search by pokemon name",
-                    text: $username
+                    text: $pokemonName
                 ) { isEditing in
                 } onCommit: {
                     firstSearch = true
-                    model.UpdatePokemonList(pokemonSearch: username)
+                    model.UpdatePokemonList(pokemonSearch: pokemonName)
                 }
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
@@ -41,7 +41,7 @@ struct ContentView: View {
                                 PokemonView(pokemonUrl: pokemon.images.large, pokemonName: pokemon.name)
                             }.onAppear {
                                 if pokemon.offset == (model.offset - 5) {
-                                    model.UpdatePokemonList(pokemonSearch: username)
+                                    model.UpdatePokemonList(pokemonSearch: pokemonName)
                                 }
                             }
                         }
