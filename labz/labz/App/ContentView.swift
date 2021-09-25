@@ -10,27 +10,43 @@ import SwiftUI
 struct ContentView: View {
     @State var username: String = ""
     @EnvironmentObject var model: PokemonViewModel
+    
     var body: some View {
         VStack {
             HStack {
                 TextField(
-                       "Search by pokemon name",
-                       text: $username
-                   ) { isEditing in
-                   } onCommit: {
-                       model.UpdatePokemonList(pokemonSearch: username)
-                   }
-                   .autocapitalization(.none)
-                   .disableAutocorrection(true)
-               .border(Color(UIColor.separator))
+                    "Search by pokemon name",
+                    text: $username
+                ) { isEditing in
+                } onCommit: {
+                    model.UpdatePokemonList(pokemonSearch: username)
+                }
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .border(Color(UIColor.separator))
                 
             }
             ScrollView {
+                if model.isSearching {
+                    LoadingView()
+                }
+                
                 LazyVStack {
-                    ForEach(model.pokemonList, id: \.self) { pokemon in
-                        VStack {
-                            PokemonView(pokemonUrl: pokemon.images.large, pokemonName: pokemon.name)
+                    if model.pokemonList.count > 0 {
+                        
+                        ForEach(model.pokemonList, id: \.self) { pokemon in
+                            VStack {
+                                PokemonView(pokemonUrl: pokemon.images.large, pokemonName: pokemon.name)
+                            }.onAppear {
+                                if pokemon.offset == (model.offset - 5) {
+                                    model.UpdatePokemonList(pokemonSearch: username)
+                                }
+                            }
                         }
+                       
+                    }
+                    else if !model.isSearching {
+                        Text("Go and catch some pokemons dear trainer!")
                     }
                 }
             }
