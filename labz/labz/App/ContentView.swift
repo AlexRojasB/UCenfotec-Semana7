@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State var username: String = ""
     @EnvironmentObject var model: PokemonViewModel
-    
+    @State var firstSearch: Bool = false
     var body: some View {
         VStack {
             HStack {
@@ -19,6 +19,7 @@ struct ContentView: View {
                     text: $username
                 ) { isEditing in
                 } onCommit: {
+                    firstSearch = true
                     model.UpdatePokemonList(pokemonSearch: username)
                 }
                 .autocapitalization(.none)
@@ -29,6 +30,7 @@ struct ContentView: View {
             ScrollView {
                 if model.isSearching {
                     LoadingView()
+                        .padding()
                 }
                 
                 LazyVStack {
@@ -45,7 +47,9 @@ struct ContentView: View {
                         }
                        
                     }
-                    else if !model.isSearching {
+                    else if !model.isSearching && firstSearch {
+                        EmptyPokemon()
+                    } else if !model.isSearching {
                         Text("Go and catch some pokemons dear trainer!")
                     }
                 }

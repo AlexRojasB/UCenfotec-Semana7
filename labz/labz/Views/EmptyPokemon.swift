@@ -9,7 +9,15 @@ import SwiftUI
 
 struct EmptyPokemon: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Image("pokemonEgg")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 100, alignment: .center)
+            Text("Este pokemon no ha eclosionado todavia!")
+                .font(.title2)
+                .fontWeight(.heavy)
+        }
     }
 }
 
