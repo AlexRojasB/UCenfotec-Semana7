@@ -7,7 +7,7 @@
 
 import Foundation
 extension API {
-    static func getPokemonListByName(pokemonName: String, page: Int, pageSize: Int = 20) -> URLRequest {
+    static func getPokemonListByName(pokemonName: String, page: Int, types: [String] = [], weaknesses: [String] = [], resistances: [String] = [], rarety: [String] = [] , pageSize: Int = 20) -> URLRequest {
         
         let request = NSMutableURLRequest(url: NSURL(string: "https://\(pokemonHost)/cards?q=name:\(pokemonName)&page=\(page)&pageSize=\(pageSize)")! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
@@ -15,4 +15,6 @@ extension API {
         request.httpMethod = "GET"
         return request as URLRequest
     }
+    
+    
 }

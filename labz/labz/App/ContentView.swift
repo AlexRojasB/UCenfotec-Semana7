@@ -28,29 +28,31 @@ struct ContentView: View {
                 
             }
             ScrollView {
-                if model.isSearching {
-                    LoadingView()
-                        .padding()
-                }
                 
-                LazyVStack {
-                    if model.pokemonList.count > 0 {
-                        
-                        ForEach(model.pokemonList, id: \.self) { pokemon in
-                            VStack {
-                                PokemonView(pokemonUrl: pokemon.images.large, pokemonName: pokemon.name)
-                            }.onAppear {
-                                if pokemon.offset == (model.offset - 5) {
-                                    model.UpdatePokemonList(pokemonSearch: pokemonName)
+                ZStack {
+                    if model.isSearching {
+                        LoadingView()
+                            .padding()
+                    }
+                    LazyVStack {
+                        if model.pokemonList.count > 0 {
+                            
+                            ForEach(model.pokemonList, id: \.self) { pokemon in
+                                VStack {
+                                    PokemonView(pokemonUrl: pokemon.images.small, pokemonName: pokemon.name)
+                                }.onAppear {
+                                    if pokemon.offset == (model.offset - 5) {
+                                        model.UpdatePokemonList(pokemonSearch: pokemonName)
+                                    }
                                 }
                             }
+                            
                         }
-                       
-                    }
-                    else if !model.isSearching && firstSearch {
-                        EmptyPokemon()
-                    } else if !model.isSearching {
-                        Text("Go and catch some pokemons dear trainer!")
+                        else if !model.isSearching && firstSearch {
+                            EmptyPokemon()
+                        } else if !model.isSearching {
+                            Text("Go and catch some pokemons dear trainer!")
+                        }
                     }
                 }
             }
